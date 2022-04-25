@@ -74,6 +74,100 @@ TEST data(void) {
     PASS();
 }
 
+TEST empty(void) {
+    int_vector vec;
+    int_vector_init(&vec);
+
+    
+    ASSERT(int_vector_empty(&vec));
+    int_vector_push_back(&vec, 1);
+    ASSERT_FALSE(int_vector_empty(&vec));
+
+    int_vector_free(&vec);
+    PASS();
+}
+
+TEST size(void) {
+    int data[] = {10, 20, 30};
+    size_t size = sizeof(data) / sizeof(data[0]);
+
+    int_vector vec;
+    int_vector_init(&vec);
+
+    ASSERT_EQ(int_vector_size(&vec), 0);
+
+    for (int i = 0; i < size; i++) {
+        int_vector_push_back(&vec, data[i]);
+    }
+
+    ASSERT_EQ(int_vector_size(&vec), size);
+    
+    int_vector_free(&vec);
+    PASS();
+}
+
+TEST capacity(void) {
+    int data[] = {10, 20, 30};
+    size_t size = sizeof(data) / sizeof(data[0]);
+
+    int_vector vec;
+    int_vector_init(&vec);
+
+    ASSERT_GTE(int_vector_capacity(&vec), int_vector_size(&vec));
+
+    for (int i = 0; i < size; i++) {
+        int_vector_push_back(&vec, data[i]);
+    }
+
+    ASSERT_GTE(int_vector_capacity(&vec), int_vector_size(&vec));
+
+    int_vector_free(&vec);
+    PASS();
+}
+
+TEST reserve(void) {
+    int_vector vec;
+    int_vector_init(&vec);
+
+    int_vector_reserve(&vec, 32);
+    ASSERT_GTE(int_vector_capacity(&vec), 32);
+
+    int_vector_push_back(&vec, 10);
+    int_vector_push_back(&vec, 20);
+    int_vector_push_back(&vec, 30);
+    
+    int_vector_reserve(&vec, 64);
+    ASSERT_GTE(int_vector_capacity(&vec), 64);
+
+    int_vector_free(&vec);
+    PASS();
+}
+
+TEST shrink(void) {
+    int data[] = {10, 20, 30, 40, 50, 60, 70, 80};
+    size_t size = sizeof(data) / sizeof(data[0]);
+    
+    int_vector vec;
+    int_vector_init(&vec);
+    int_vector_shrink(&vec);
+
+    ASSERT_EQ(int_vector_size(&vec), int_vector_capacity(&vec));
+
+    for (int i = 0; i < size; i++) {
+        int_vector_push_back(&vec, data[i]);
+    }
+    
+    for (int i = 0; i < size / 2; i++) {
+        int_vector_pop_back(&vec);
+    }
+    
+    int_vector_shrink(&vec);
+    ASSERT_EQ(int_vector_size(&vec), int_vector_capacity(&vec));
+
+    int_vector_free(&vec);
+    PASS();
+}
+
 TEST push_back(void) {
     int data[] = {10, 20, 30};
     size_t size = sizeof(data) / sizeof(data[0]);
@@ -84,12 +178,11 @@ TEST push_back(void) {
     for (int i = 0; i < size; i++) {
         int_vector_push_back(&vec, data[i]);
     }
-
+    
     ASSERT_EQ(vec.top, size);
     ASSERT_MEM_EQ(vec.data, data, size * sizeof(int));
     
     int_vector_free(&vec);
-
     PASS();
 }
 
@@ -113,7 +206,6 @@ TEST pop_back(void) {
     );
     
     int_vector_free(&vec);
-
     PASS();
 }
 
@@ -154,7 +246,6 @@ TEST erase(void) {
     ASSERT_MEM_EQ(vec.data, data, 2 * sizeof(int));
 
     int_vector_free(&vec);
-
     PASS();
 }
 
@@ -164,6 +255,10 @@ SUITE(vector) {
     RUN_TEST(front);
     RUN_TEST(back);
     RUN_TEST(data);
+    RUN_TEST(empty);
+    RUN_TEST(size);
+    RUN_TEST(capacity);
+    RUN_TEST(reserve);
     RUN_TEST(push_back);
     RUN_TEST(pop_back);
     RUN_TEST(insert);

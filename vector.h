@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <memory.h>
+#include <stdbool.h>
 #include "template.h"
 #include "alloc.h"
 
@@ -52,6 +53,27 @@ static inline T* $T(VEC_T, back)(VEC_T *me) {
 
 static inline T* $T(VEC_T, data)(VEC_T *me) {
     return me->data;
+}
+
+static inline bool $T(VEC_T, empty)(VEC_T *me) {
+    return me->top == 0;
+}
+
+static inline size_t $T(VEC_T, size)(VEC_T *me) {
+    return me->top;
+}
+
+static inline size_t $T(VEC_T, capacity)(VEC_T *me) {
+    return me->capacity;
+}
+
+static inline void $T(VEC_T, reserve)(VEC_T *me, size_t new_capacity) {
+    if (new_capacity > me->capacity)
+        VEC_REALLOC(me, new_capacity);
+}
+
+static inline void $T(VEC_T, shrink)(VEC_T *me) {
+    VEC_REALLOC(me, me->top);
 }
 
 static inline void $T(VEC_T, push_back)(VEC_T *me, T value) {
