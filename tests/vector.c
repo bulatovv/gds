@@ -179,8 +179,11 @@ TEST push_back(void) {
         int_vector_push_back(&vec, data[i]);
     }
     
-    ASSERT_EQ(vec.top, size);
-    ASSERT_MEM_EQ(vec.data, data, size * sizeof(int));
+    ASSERT_EQ(int_vector_size(&vec), size);
+    ASSERT_MEM_EQ(
+        int_vector_data(&vec), data,
+        size * sizeof(int)
+    );
     
     int_vector_free(&vec);
     PASS();
@@ -199,9 +202,9 @@ TEST pop_back(void) {
 
     int_vector_pop_back(&vec);
 
-    ASSERT_EQ(vec.top, size - 1);
+    ASSERT_EQ(int_vector_size(&vec), size - 1);
     ASSERT_EQ(
-        vec.data[vec.top - 1],
+        *int_vector_back(&vec),
         data[size - 2]
     );
     
@@ -221,10 +224,12 @@ TEST insert(void) {
     int data[] = {1, 2, 3, 4};
     
 
-    ASSERT_MEM_EQ(vec.data, data, 4 * sizeof(int));
+    ASSERT_MEM_EQ(
+        int_vector_data(&vec), data,
+        4 * sizeof(int)
+    );
     
     int_vector_free(&vec);
-
     PASS();
 }
 
@@ -243,7 +248,10 @@ TEST erase(void) {
     int_vector_erase(&vec, 1);
 
     int data[] = {2, 4}; 
-    ASSERT_MEM_EQ(vec.data, data, 2 * sizeof(int));
+    ASSERT_MEM_EQ(
+        int_vector_data(&vec), data,
+        2 * sizeof(int)
+    );
 
     int_vector_free(&vec);
     PASS();
