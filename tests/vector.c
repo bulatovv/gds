@@ -4,7 +4,7 @@
 #include "../vector.h"
 
 
-TEST at(void) { 
+TEST at(void) {
     int data[] = {10, 20, 30};
     size_t size = sizeof(data) / sizeof(data[0]);
 
@@ -124,12 +124,12 @@ TEST insert(void) {
     int_vector_insert(&vec, 0, 3);
     int_vector_insert(&vec, 0, 1);
     int_vector_insert(&vec, 1, 2);
-    int_vector_insert(&vec, 2, 4);
+    int_vector_insert(&vec, 3, 4);
 
     int data[] = {1, 2, 3, 4};
     
 
-    ASSERT_MEM_EQ(vec.data, data, 2 * sizeof(int));
+    ASSERT_MEM_EQ(vec.data, data, 4 * sizeof(int));
     
     int_vector_free(&vec);
 
