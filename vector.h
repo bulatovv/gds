@@ -38,6 +38,22 @@ static inline void $T(VEC_T, free)(VEC_T *me) {
     DEALLOC(me->data);
 }
 
+static inline T* $T(VEC_T, at)(VEC_T *me, size_t pos) {
+    return me->data + pos;
+}
+
+static inline T* $T(VEC_T, front)(VEC_T *me) {
+    return me->data;
+}
+
+static inline T* $T(VEC_T, back)(VEC_T *me) {
+    return me->data + me->top - 1;
+}
+
+static inline T* $T(VEC_T, data)(VEC_T *me) {
+    return me->data;
+}
+
 static inline void $T(VEC_T, push_back)(VEC_T *me, T value) {
     if (me->top == me->capacity)
         VEC_REALLOC(me, me->capacity * GROWTH_FACTOR);
