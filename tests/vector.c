@@ -258,6 +258,84 @@ TEST erase(void) {
 }
 
 
+TEST clear(void) {
+    int_vector vec;
+    int_vector_init(&vec);
+
+    int_vector_insert(&vec, 0, 5);
+    int_vector_insert(&vec, 0, 4);
+    int_vector_insert(&vec, 0, 3);
+    int_vector_insert(&vec, 0, 2);
+    int_vector_insert(&vec, 0, 1);
+
+    int_vector_clear(&vec);
+    ASSERT_EQ(int_vector_size(&vec), 0);
+
+    int_vector_free(&vec);
+    PASS();
+}
+
+TEST resize(void) {
+    int_vector vec;
+    int_vector_init(&vec);
+
+    int_vector_resize(&vec, 5);
+    ASSERT_EQ(int_vector_size(&vec), 5);
+    ASSERT_GTE(int_vector_capacity(&vec), int_vector_size(&vec));
+
+
+    int_vector_resize(&vec, 10);
+    ASSERT_EQ(int_vector_size(&vec), 10);
+    ASSERT_GTE(int_vector_capacity(&vec), int_vector_size(&vec));
+
+    int_vector_resize(&vec, 3);
+    ASSERT_EQ(int_vector_size(&vec), 3);
+    ASSERT_GTE(int_vector_capacity(&vec), int_vector_size(&vec));
+
+    int_vector_resize(&vec, 0);
+    ASSERT_EQ(int_vector_size(&vec), 0);
+    ASSERT_GTE(int_vector_capacity(&vec), int_vector_size(&vec));
+
+    int_vector_free(&vec);
+    PASS();
+}
+
+TEST swap(void) {
+    int_vector vec1;
+    int_vector_init(&vec1);
+
+    int_vector vec2;
+    int_vector_init(&vec2);
+
+    int data1[] = {10, 20, 30, 40, 50, 60, 70, 80};
+    int data2[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+
+    for (int i = 0; i < sizeof(data1) / sizeof(data1[0]); i++) {
+        int_vector_push_back(&vec1, data1[i]);
+    }
+
+    for (int i = 0; i < sizeof(data2) / sizeof(data2[0]); i++) {
+        int_vector_push_back(&vec2, data2[i]);
+    }
+
+    int_vector_swap(&vec1, &vec2);
+
+    ASSERT_MEM_EQ(
+        int_vector_data(&vec1), data2,
+        sizeof(data2)
+    );
+
+    ASSERT_MEM_EQ(
+        int_vector_data(&vec2), data1,
+        sizeof(data1)
+    );
+
+    int_vector_free(&vec1);
+    int_vector_free(&vec2);
+    PASS();
+}
+
+
 SUITE(vector) {
     RUN_TEST(at);
     RUN_TEST(front);
@@ -271,4 +349,7 @@ SUITE(vector) {
     RUN_TEST(pop_back);
     RUN_TEST(insert);
     RUN_TEST(erase);
+    RUN_TEST(clear);
+    RUN_TEST(resize);
+    RUN_TEST(swap);
 }

@@ -112,6 +112,23 @@ static inline void $T(VEC_T, erase)(VEC_T *me, size_t pos) {
     me->top--;
 }
 
+static inline void $T(VEC_T, clear)(VEC_T *me) {
+    me->top = 0;
+}
+
+static inline void $T(VEC_T, resize)(VEC_T *me, size_t count) {
+    if (count > me->capacity)
+        VEC_REALLOC(me, count);
+    
+    me->top = count;
+}
+
+static inline void $T(VEC_T, swap)(VEC_T *me, VEC_T *other) {
+    VEC_T tmp = *me;
+    *me = *other;
+    *other = tmp;
+}
+
 #undef T
 #undef VEC_T
 #undef GROWTH_FACTOR
