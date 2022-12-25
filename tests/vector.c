@@ -180,6 +180,7 @@ TEST push_back(void) {
     }
     
     ASSERT_EQ(int_vec_size(&vec), size);
+    ASSERT_GTE(int_vec_capacity(&vec), int_vec_size(&vec));
     ASSERT_MEM_EQ(
         int_vec_data(&vec), data,
         size * sizeof(int)
@@ -203,6 +204,7 @@ TEST pop_back(void) {
     int_vec_pop_back(&vec);
 
     ASSERT_EQ(int_vec_size(&vec), size - 1);
+    ASSERT_GTE(int_vec_capacity(&vec), int_vec_size(&vec));
     ASSERT_EQ(
         *int_vec_back(&vec),
         data[size - 2]
@@ -223,7 +225,8 @@ TEST insert(void) {
 
     int data[] = {1, 2, 3, 4};
     
-
+    ASSERT_EQ(int_vec_size(&vec), 4);
+    ASSERT_GTE(int_vec_capacity(&vec), int_vec_size(&vec));
     ASSERT_MEM_EQ(
         int_vec_data(&vec), data,
         4 * sizeof(int)
@@ -247,7 +250,10 @@ TEST erase(void) {
     int_vec_erase(&vec, 3);
     int_vec_erase(&vec, 1);
 
-    int data[] = {2, 4}; 
+    int data[] = {2, 4};
+
+    ASSERT_EQ(int_vec_size(&vec), 2);
+    ASSERT_GTE(int_vec_capacity(&vec), int_vec_size(&vec));
     ASSERT_MEM_EQ(
         int_vec_data(&vec), data,
         2 * sizeof(int)
@@ -270,6 +276,7 @@ TEST clear(void) {
 
     int_vec_clear(&vec);
     ASSERT_EQ(int_vec_size(&vec), 0);
+    ASSERT_GTE(int_vec_capacity(&vec), int_vec_size(&vec));
 
     int_vec_free(&vec);
     PASS();
@@ -320,11 +327,15 @@ TEST swap(void) {
 
     int_vec_swap(&vec1, &vec2);
 
+    ASSERT_EQ(int_vec_size(&vec1), sizeof(data2) / sizeof(data2[0]));
+    ASSERT_GTE(int_vec_capacity(&vec1), int_vec_size(&vec1));
     ASSERT_MEM_EQ(
         int_vec_data(&vec1), data2,
         sizeof(data2)
     );
 
+    ASSERT_EQ(int_vec_size(&vec2), sizeof(data1) / sizeof(data1[0]));
+    ASSERT_GTE(int_vec_capacity(&vec2), int_vec_size(&vec2));
     ASSERT_MEM_EQ(
         int_vec_data(&vec2), data1,
         sizeof(data1)
