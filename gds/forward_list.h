@@ -8,7 +8,7 @@
 #endif
 
 
-#define LIST_T $T(T,  fwd_list)
+#define LIST_T $T(T,  flist)
 #define NODE_T $T(LIST_T, node)
 #define ITER_T $T(LIST_T, iter)
 

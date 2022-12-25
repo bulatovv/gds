@@ -13,7 +13,7 @@
 #ifndef GROWTH_FACTOR
     #define GROWTH_FACTOR 2
 #endif
-#define VEC_T $T(T, vector)
+#define VEC_T $T(T, vec)
 
 
 typedef struct VEC_T {
