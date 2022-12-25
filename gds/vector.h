@@ -10,7 +10,9 @@
 #endif
 
 
-#define GROWTH_FACTOR 2
+#ifndef GROWTH_FACTOR
+    #define GROWTH_FACTOR 2
+#endif
 #define VEC_T $T(T, vector)
 
 
