@@ -1,7 +1,7 @@
 #include "../greatest/greatest.h"
 
 #define T int
-#include "../vector.h"
+#include "../gds/vector.h"
 
 
 TEST at(void) {

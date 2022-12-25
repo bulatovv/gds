@@ -1,7 +1,7 @@
 #include "../greatest/greatest.h"
 
 #define T int
-#include "../forward_list.h"
+#include "../gds/forward_list.h"
 
 TEST push_front(void) {
     int data[] = {10, 20, 30};
