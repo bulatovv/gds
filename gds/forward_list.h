@@ -1,6 +1,8 @@
 #include <stdlib.h>
+#include <stdbool.h>
 #include "template.h"
 #include "alloc.h"
+
 
 #ifndef T
     #error "Type argument T is not defined for <forward_list.h>"
@@ -42,6 +44,14 @@ static inline void $T(LIST_T, free)(LIST_T *me) {
         curr = curr->next;
         $T(NODE_T, free)(tmp);
     }
+}
+
+static inline T* $T(LIST_T, front)(LIST_T *me) {
+    return &me->head->data;
+}
+
+static inline bool $T(LIST_T, empty)(LIST_T *me) {
+    return me->head == NULL;
 }
 
 static inline void $T(LIST_T, push_front)(LIST_T *me, T value) {
