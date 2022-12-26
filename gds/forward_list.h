@@ -54,6 +54,11 @@ static inline bool $T(LIST_T, empty)(LIST_T *me) {
     return me->head == NULL;
 }
 
+static inline void $T(LIST_T, clear)(LIST_T *me) {
+    $T(LIST_T, free)(me);
+    $T(LIST_T, init)(me);
+}
+
 static inline void $T(LIST_T, push_front)(LIST_T *me, T value) {
     NODE_T *node = ALLOC(NODE_T, 1);
     $T(NODE_T, init)(node, value, me->head);

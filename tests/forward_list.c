@@ -30,6 +30,21 @@ TEST empty(void) {
     PASS();
 }
 
+TEST clear(void) {
+    int_flist lst;
+    int_flist_init(&lst);
+
+    int_flist_push_front(&lst, 1);
+    int_flist_push_front(&lst, 2);
+    ASSERT(!int_flist_empty(&lst));
+
+    int_flist_clear(&lst);
+    ASSERT(int_flist_empty(&lst));
+
+    int_flist_free(&lst);
+    PASS();
+}
+
 TEST push_front(void) {
     int data[] = {10, 20, 30};
     size_t size = sizeof(data) / sizeof(data[0]);
@@ -78,6 +93,7 @@ TEST pop_front(void) {
 SUITE(forward_list) {
     RUN_TEST(front);
     RUN_TEST(empty);
+    RUN_TEST(clear);
     RUN_TEST(push_front);
     RUN_TEST(pop_front);
 }
