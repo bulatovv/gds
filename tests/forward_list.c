@@ -33,6 +33,9 @@ TEST empty(void) {
 TEST clear(void) {
     int_flist lst;
     int_flist_init(&lst);
+    
+    int_flist_clear(&lst);
+    ASSERT(int_flist_empty(&lst));
 
     int_flist_push_front(&lst, 1);
     int_flist_push_front(&lst, 2);
@@ -66,6 +69,42 @@ TEST push_front(void) {
     PASS();
 }
 
+size_t int_flist_size(int_flist *lst) {
+    size_t size = 0;
+    int_flist_node *curr = lst->head;
+    while (curr != NULL) {
+        size++;
+        curr = curr->next;
+    }
+    return size;
+}
+
+TEST resize(void) {
+    int_flist lst;
+    int_flist_init(&lst);
+    
+    int_flist_resize(&lst, 0);
+    ASSERT_EQ(0, int_flist_size(&lst));
+
+    int_flist_resize(&lst, 10);
+    ASSERT_EQ(10, int_flist_size(&lst));
+    
+    int_flist_resize(&lst, 10);
+    ASSERT_EQ(10, int_flist_size(&lst));
+
+    int_flist_resize(&lst, 5);
+    ASSERT_EQ(5, int_flist_size(&lst));
+    
+    int_flist_resize(&lst, 6);
+    ASSERT_EQ(6, int_flist_size(&lst));
+
+    int_flist_resize(&lst, 0);
+    ASSERT_EQ(0, int_flist_size(&lst));
+
+    int_flist_free(&lst);
+    PASS();
+}
+
 TEST pop_front(void) {
     int data[] = {10, 20, 30};
     size_t size = sizeof(data) / sizeof(data[0]);
@@ -94,6 +133,7 @@ SUITE(forward_list) {
     RUN_TEST(front);
     RUN_TEST(empty);
     RUN_TEST(clear);
+    RUN_TEST(resize);
     RUN_TEST(push_front);
     RUN_TEST(pop_front);
 }

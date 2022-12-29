@@ -59,6 +59,40 @@ static inline void $T(LIST_T, clear)(LIST_T *me) {
     $T(LIST_T, init)(me);
 }
 
+
+static inline void $T(LIST_T, resize)(LIST_T *me, size_t count) {
+    NODE_T *prev = NULL;
+    NODE_T *curr = me->head;
+
+    while (curr != NULL && count > 0) {
+        prev = curr;
+        curr = curr->next;
+        count--;
+    }
+
+    while (curr != NULL) {
+        NODE_T *tmp = curr;
+        curr = curr->next;
+        $T(NODE_T, free)(tmp);
+    }
+    
+    NODE_T *next = NULL;
+    while (count > 0) {
+        NODE_T *tmp = ALLOC(NODE_T, 1);
+        tmp->next = next;
+        next = tmp;
+        count--;
+    }
+
+    if (prev == NULL) {
+        me->head = next;
+    }
+    else {
+        prev->next = next;
+    }
+}
+
+
 static inline void $T(LIST_T, push_front)(LIST_T *me, T value) {
     NODE_T *node = ALLOC(NODE_T, 1);
     $T(NODE_T, init)(node, value, me->head);
